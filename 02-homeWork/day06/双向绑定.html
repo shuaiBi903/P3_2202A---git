@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="show">
+        <input type="text" v-model="username">
+        <div>
+            {{ username }}
+        </div>
+        <script>
+            //获取dom
+            var showDom = document.querySelector('.show');
+            //模拟data对象
+            var data = {
+                _username: 'Tom'
+            }
+            //获取所有展示区的innerHtml
+            var strHtml = showDom.innerHTML;
+            //渲染函数
+            function render () {
+                //替换里面的模板
+                showDom.innerHTML = strHtml.replace(/{{\s+[\w.]+\s+}}/g, (str) => {
+                    str = str.slice(2, str.length - 2).trim()
+                    return data[str]
+                })
+                Array.from(showDom.querySelectorAll('input')).forEach(function (input) {
+                    var bindData = input.getAttribute('v-model')
+                    input.addEventListener('input', function () {
+                        data[bindData] = this.value;
+                    }, false)
+                    将data的数据绑定到Dom
+                    input.value = data["username"]
+                })
+            }
+
+
+            Object.defineProperty(data, 'username', {
+                enumerable: true,
+                configurable: true,
+                get () {
+                    return this._username;
+                },
+                set (value) {
+                    this._username = value;
+                    render()
+                }
+            })
+            data.username = "123"
+        </script>
+    </div>
+</body>
+
+</html>
