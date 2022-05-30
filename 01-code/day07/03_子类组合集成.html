@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Father (name) {
+            this.name = name;
+        }
+
+        //给父类设置一个原型方法
+        Father.prototype.say = function () {
+            console.log('拖拉机真好用');
+        }
+        //子类
+        function Son () {
+            Father.call(this, '习大大')
+            this.age = 18;
+        }
+        //让Father成为Son的原型链
+        Son.prototype = new Father();
+        var sonObj = new Son()
+        sonObj.say()
+        console.log(sonObj);
+    </script>
+</body>
+
+</html>
