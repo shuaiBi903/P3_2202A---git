@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button type="button" onclick="but(2000)" class="fangDou">按键1</button>
+  <button type="button" onclick="but2()">按键1</button>
+  <script>
+    // document.querySelector('.fangDou').onclick = dou()
+    // 防抖
+    function dou (num) {
+      var f = false
+      var i = 0
+      return function (num) {
+        i++
+        if (f) {
+          clearTimeout(f)
+        }
+        f = setTimeout(function () {
+          //执行语句
+          console.log(i);
+        }, num)
+      }
+    }
+
+    var fd = dou()
+    function but (num) {
+      fd(num)
+    }
+
+    // 节流
+    function jieLiu () {
+      var f = true
+      return function () {
+        if (f) {
+          f = false
+          setTimeout(function () {
+            console.log('节流');
+            f = true
+          }, 2000)
+        }
+      }
+    }
+    var jl = jieLiu()
+    function but2 () {
+      jl()
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var arr = ["ken1", "ken2", "ken3", "ken1", "ken4", "ken3", "ken2", "ken2"];
+    for (var i = 0; i < arr.length; i++) {
+      for (var j = i + 1; j < arr.length; j++) {
+        if (arr[i] == arr[j]) {
+          var a = arr[i + 1]
+          arr[i + 1] = arr[j]
+          arr[j] = a
+        }
+      }
+    }
+    console.log(arr);
+  </script>
+</body>
+
+</html>

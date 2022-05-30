@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拷贝</title>
+</head>
+
+<body>
+    <script>
+        var obj = {
+            a: 1,
+            b: 2,
+            c: {
+                d: 3
+            }
+        }
+        //浅拷贝 
+        var obj2 = Object.assign({}, obj);
+        obj2.a = 2;
+        obj2.c.d = 4;
+        console.log(obj);
+        console.log(obj2);
+        //深拷贝
+        var obj3 = fn(obj)
+        function fn (dx) {
+            var newobj = {};
+            for (var key in dx) {
+                if (typeof dx[key] === 'object') {
+                    newobj[key] = fn(dx[key])
+                } else {
+                    newobj[key] = dx[key]
+                }
+            }
+            return newobj;
+        }
+        obj3.c.d = 6;
+        console.log(obj3);
+    </script>
+</body>
+
+</html>

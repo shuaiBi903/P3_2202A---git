@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button type="button" class="fangDou">防抖</button>
+    <button type="button" class="jieliu">节流</button>
+    <script>
+        document.querySelector('.fangDou').onclick = fd();
+        function fd () {
+            var f = false;
+            return function () {
+                if (f) {
+                    clearTimeout(f)
+                }
+                f = setTimeout(function () {
+                    console.log('防抖');
+                }, 1000)
+            }
+        }
+        document.querySelector('.jieliu').onclick = jl()
+        function jl () {
+            var f = true;
+            return function () {
+                if (f) {
+                    f = false
+                    setTimeout(function () {
+                        console.log('节流');
+                        f = true
+                    }, 1000)
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

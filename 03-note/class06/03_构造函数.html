@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <script>
+        function Vue (name) {
+            // 开辟一个新的内存空间 this => {}
+            this.name = name;
+            this.say = function () {
+                console.log("say");
+            }
+            this.age = 18;
+
+            // return this;
+            /* 
+                1.默认返回this
+                2.return后面是基本数据类型返回的是this
+                3.return后面是引用数据类型返回的是该引用数据类型的数据
+
+                普通函数中没有写return,默认返回undefined
+            */
+        }
+
+        var obj = new Vue("ken");
+        console.log(obj);
+        obj.say();
+
+        console.log("判断是否是该构造函数的实例:", obj instanceof Vue);
+
+
+    </script>
+</body>
+
+</html>

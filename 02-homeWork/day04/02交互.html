@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  姓名: <input type="text " class="userIpt">
+  <button type="button" onclick="addFn()">添加</button>
+  <table>
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody class="tbd">
+      <!-- <tr>
+        <td>1</td>
+        <td>123</td>
+        <td>
+          <button type="button" onclick="delFn()"></button>
+        </td>
+      </tr> -->
+    </tbody>
+  </table>
+  <script>
+    //声明小黄人
+    var xhr = new XMLHttpRequest();
+    getData()
+    //封装小黄人渲染
+    function getData () {
+      xhr.open('GET', 'http://localhost:3000/list')
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var obj = JSON.parse(xhr.responseText);
+          show(obj.data)
+        }
+      }
+    }
+    function show (arr) {
+      var tbdDom = document.querySelector('.tbd');
+      var str = ''
+      for (let i = 0; i < arr.length; i++) {
+        str += `
+            <tr>
+                <td>${i}</td>
+                <td>${arr[i].user}</td>
+                <td>
+                  <button type="button" onclick="delFn(${arr[i].id})">删除</button>
+                </td>
+             </tr>
+        `
+
+      }
+      tbdDom.innerHTML = str
+    }
+
+    //添加
+    function addFn () {
+      //获取Dom
+      var userDom = document.querySelector('.userIpt');
+      xhr.open('POST', 'http://localhost:3000/add')
+      //设置编码
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      xhr.send(`user=${userDom.value}&id=${+new Date()}`)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var obj = JSON.parse(xhr.responseText);
+          console.log(obj);
+          if (obj.code == 200) {
+            getData()
+          } else {
+            alert(obj.msg)
+          }
+        }
+      }
+    }
+
+    //删除函数
+    function delFn (id) {
+      xhr.open('GET', 'http://localhost:3000/del?id=' + id)
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var obj = JSON.parse(xhr.responseText);
+          if (obj.code == 200) {
+            getData()
+          } else {
+            alert(obj.msg)
+          }
+        }
+
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>微信聊天</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      #app {
+        width: 350px;
+        height: 600px;
+        background-color: lightgrey;
+        margin: auto;
+      }
+
+      img {
+        width: 30px;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .top {
+        width: 350px;
+        height: 30px;
+        background-color: bisque;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 20px;
+      }
+
+      .left {
+        text-align: left;
+      }
+
+      .right {
+        text-align: right;
+      }
+
+      .footer {
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        position: absolute;
+        bottom: 124px;
+        padding-left: 40px;
+      }
+
+      .footer > img {
+        cursor: pointer;
+      }
+
+      .footer input {
+        width: 200px;
+        height: 24px;
+      }
+
+      .aa {
+        width: 100px;
+        height: 40px;
+        background-color: white;
+        margin-top: 5px;
+        display: inline;
+      }
+
+      .left > div:first-child,
+      .right > div:first-child {
+        text-align: center;
+      }
+
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="top">小可爱</div>
+      <div class="bottom">
+        <div class="box">
+          <!-- <div class="left">
+                    <div class="hide"></div>
+                    <img src="./01.png" alt="">
+                    <span class="aa">111111111111</span>
+                </div>
+                <div class="right">
+                    <div class="hide"></div>
+                    <span class="aa">2222222222</span>
+                    <img src="./02.png" alt="">
+                </div> -->
+        </div>
+        <div class="footer">
+          <img src="./01.png" alt="" />
+          <input type="text" class="content" />
+          <button onclick="add()">发送</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // 获取DOM
+      var checkImg = "./01.png"; // 默认选中的图片
+      var content = document.querySelector(".content");
+      var box = document.querySelector(".box");
+      var imgBtn = document.querySelector(".footer>img");
+      var username = document.querySelector(".top");
+
+      // 获取本地存储数据
+      var arr = localStorage.arr ? JSON.parse(localStorage.arr) : [];
+
+      // 页面已加载就渲染数据
+      show();
+
+      // 点击添加
+      function add() {
+        // 获取当前时间
+        var id = new Date().getTime();
+        // 是否显示时间(默认显示)
+        var isShow = true;
+        if (arr.length) {
+          // 获取上一条信息添加的时间
+          var oldId = arr[arr.length - 1].id;
+          // 获取时间差
+          var num = id - oldId;
+          if (num > 5000) {
+            isShow = true;
+          } else {
+            isShow = false;
+          }
+        }
+
+        // 声明对象
+        var obj = {
+          img: checkImg,
+          content: content.value,
+          id: id,
+          isShow: isShow,
+        };
+
+        arr.push(obj);
+
+        // 清空输入框
+        content.value = "";
+
+        // 数据渲染
+        show();
+      }
+
+      // 数据渲染
+      function show() {
+        // 进行本地存储
+        localStorage.arr = JSON.stringify(arr);
+
+        var str = "";
+
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].img == "./01.png") {
+            str += `
+                        <div class="left">
+                            <div class="${arr[i].isShow ? "" : "hide"}">${getTime(arr[i].id)}</div>
+                            <img src="${arr[i].img}" alt="">
+                            <span class="aa">${arr[i].content}</span>
+                        </div>
+                    `;
+          } else {
+            str += `
+                        <div class="right">
+                            <div class="${arr[i].isShow ? "" : "hide"}">${getTime(arr[i].id)}</div>
+                            <span class="aa">${arr[i].content}</span>
+                            <img src="${arr[i].img}" alt="">
+                        </div>
+                    `;
+          }
+        }
+
+        box.innerHTML = str;
+      }
+
+      // 切换图片
+      imgBtn.onclick = function () {
+        if (this.getAttribute("src") == "./01.png") {
+          this.setAttribute("src", "./02.png");
+          checkImg = "./02.png";
+          username.innerHTML = "小宝贝";
+        } else {
+          this.setAttribute("src", "./01.png");
+          checkImg = "./01.png";
+          username.innerHTML = "小可爱";
+        }
+      };
+
+      //时间函数
+      function getTime(id) {
+        var d = new Date(id);
+        return d.getFullYear() + "/" + numFn(d.getMonth() + 1) + "/" + numFn(d.getDate()) + " " + numFn(d.getHours()) + ":" + numFn(d.getMinutes()) + ":" + numFn(d.getSeconds());
+      }
+      // 时间补零函数
+      function numFn(n) {
+        return n < 10 ? "0" + n : n;
+      }
+    </script>
+  </body>
+</html>

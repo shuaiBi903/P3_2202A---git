@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    table,
+    td,
+    th {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tainJia">
+    姓名: <input type="text" class="userIpt"><br>
+    年龄: <input type="text" class="ageIpt"><br>
+    性别: <input type="radio" name="sex" value="男" checked>男
+    <input type="radio" name="sex" value="女">女
+    <br>
+  </div>
+  <button type="button" class="but_add">提交</button>
+  <table>
+    <thead>
+      <th>序号</th>
+      <th>姓名</th>
+      <th>年龄</th>
+      <th>性别</th>
+      <th>操作</th>
+    </thead>
+    <tbody class="tbd">
+      <!-- <tr>
+        <td>01</td>
+        <td>小绵羊</td>
+        <td>18</td>
+        <td>女</td>
+        <td>
+          <button type="button" onclick="delFn()">删除</button>
+        </td>
+      </tr> -->
+    </tbody>
+  </table>
+</body>
+<script>
+  //声明小黄人
+  var xhr = new XMLHttpRequest()
+  getData()
+  //封装获取Dom函数
+  var getDom = function (str) {
+    return document.querySelector(str)
+  }
+  // 封装小黄人
+  // 小黄人渲染
+  function getData () {
+    xhr.open("GET", "http://localhost:3000/list")
+    xhr.send()
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var obj = JSON.parse(xhr.responseText)
+        show(obj.data)
+      }
+    }
+  }
+  //展示函数
+  function show (arr) {
+    var str = ''
+    for (let i = 0; i < arr.length; i++) {
+      str += `
+               <tr>
+                          <td>${i < 10 ? '0' + (i + 1) : i}</td>
+                          <td>${arr[i].user}</td>
+                          <td>${arr[i].age}</td>
+                          <td>${arr[i].sex}</td>
+                          <td>
+                            <button type="button" onclick="delFn(${arr[i].id})">删除</button>
+                          </td>
+               </tr>
+      
+      `
+    }
+    getDom('.tbd').innerHTML = str
+
+  }
+
+  //添加功能add
+  getDom('.but_add').onclick = function () {
+    if (!getDom('.userIpt').value) {
+      alert('请填写名字')
+      return;
+    }
+    if (!getDom('.ageIpt').value) {
+      alert('请填写年龄')
+      return;
+    }
+    console.log(11);
+    //获取性别Dom
+    var sexDom = document.querySelectorAll('input[name="sex"]');
+    console.log(sexDom);
+    xhr.open('POST', 'http://localhost:3000/add')
+    //设置响应编码
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    //传递实参
+    xhr.send(`user=${getDom('.userIpt').value}&age=${getDom('.ageIpt').value}&sex=${sexDom[0].checked ? sexDom[0].value : sexDom[1].value}&id=${+ new Date()}`)
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var obj = JSON.parse(xhr.responseText)
+        if (obj.code == 200) {
+          getData()
+          getDom('.userIpt').value = getDom('.ageIpt').value = ''
+        } else {
+          alert(obj.msg)
+        }
+      }
+    }
+  }
+  //删除功能
+  function delFn (id) {
+    xhr.open("GET", "http://localhost:3000/del?id=" + id);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var obj = JSON.parse(xhr.responseText);
+        if (obj.code == 200) {
+          getData()
+        } else {
+          alert(obj.msg)
+        }
+      }
+    }
+  }
+</script>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<script>
+		var obj = {
+			username: '伊拉克',
+			say: function (num) {
+				console.log(this.username, num)
+			}
+		}
+
+		var obj22 = {
+			username: '阿富汗'
+		}
+
+		obj.say.call(obj22, 123)
+
+		obj.say.apply(obj22, [1, 2, 3])
+
+		var fn = obj.say.bind(obj22);
+		var me = Object.create(obj)
+		console.log(me.username);
+
+		fn(456)
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <script>
+        /*
+            回调函数:
+                把函数当做参数来调用的函数就是回调函数
+        */
+
+        function fn (num, callback) {
+            num++;
+            callback(num);
+        }
+
+        fn("1", function (num) {
+            console.log("回调函数", num);
+        });
+
+
+        /*
+            名字(function(){})   函数
+        */
+
+        /*
+            有哪几种情况转换成布尔值为false
+                undefined
+                null
+                NaN
+                ""
+                0
+                false
+        */
+
+
+    </script>
+</body>
+
+</html>

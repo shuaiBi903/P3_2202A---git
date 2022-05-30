@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<body>
+
+    <script>
+        //书写函数 num以内的和
+        function he (num) {
+            //终止条件
+            if (num == 1) return 1
+            //返回值
+            return num + he(num - 1)
+        }
+        //调用函数并赋值
+        var jieGuo = he(100)
+        //打印
+        console.log(jieGuo);
+    </script>
+</body>
+
+</html>

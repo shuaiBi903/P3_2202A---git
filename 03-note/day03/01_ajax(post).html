@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <script>
+        // 创建xhr对象
+        var xhr = new XMLHttpRequest(); // Request 请求
+
+        // 规定请求的类型
+        xhr.open("POST", "http://www.liulongbin.top:3006/api/addbook")
+        // xhr.open(规定请求方式,请求的地址,是否异步_默认异步)
+
+        // 设置请求头
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        // 发送请求
+        xhr.send("bookname=斗罗大陆&author=唐家三少&publisher=未知");
+        // 参数序列化 a=1&b=2  x-www-form-urlencoded
+        // json格式  {a:1,b:2}  json格式   
+
+        // 接收响应数据
+        xhr.onreadystatechange = function () {
+            // 当准备状态为4时(已经就绪)  且 状态 为200  才能接收数据
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText); // responseText 通过这个属性来接收后端响应的数据(字符串)
+
+                // 转换成对象
+                var obj = JSON.parse(xhr.responseText);
+                console.log(obj);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+1.下载安装git
+2.注册github,gitee账号,账号名称用名字缩写+年份-4,QQ邮箱
+3.在git命令窗口配置
+git config --global user.name "dnh2016"
+git config --global user.email "your_email@youremail.com"
+3.在git命令中生成秘钥
+ssh-keygen -t rsa -C "your_email@youremail.com"
+
+
+4.在github/gitee 官网配置ssh秘钥
+5.在github/gitee创建项目
+6.通过git命令窗口拉取项目
+
+7.git工具简单流程
+
+git init 			git初始化
+
+git add . 			添加所有变动的文件
+
+git status 			查看项目中变动的文件
+
+git rm --cached 01.txt	暂存区删除
+
+git commit -m "注释" 	把缓存区的内容放入版本库
+
+git push origin master 	把当前版本推送到仓库
+
+git branch 分支名 		创建分支
+
+git branch -d 分支名		删除分支
+
+git checkout 分支名 		切换分支
+
+git checkout -b 分支名	 创建分支并切换分支
+
+git merge 指定分支 		合并指定分支到当前分支
+合并后直接git push
+
+git clone 地址		克隆代码
+
+git rm test06.txt		删除某一个文件
+
+git restore --staged test06.txt	
+git restore test06.txt		撤销删除的文件
+
+当本地仓库和远程仓库不同步时添加报错的解决方
+案
+通过以下命令取拉取代码,再push
+git pull --rebase origin master
+git push	
+
+git remote add origin https://gitee.com/duan-naihui/.git
+			连接远程仓库

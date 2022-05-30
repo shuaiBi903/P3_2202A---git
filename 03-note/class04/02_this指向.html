@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <div>
+        <button type="button" class="btn">按钮</button>
+        <button type="button" onclick="fn1(this)">按钮1</button>
+    </div>
+    <script>
+        function fn () {
+            console.log("普通函数中this指向:", this); // window
+        }
+        fn();
+
+        document.querySelector(".btn").onclick = function () {
+            console.log("点击事件中this指向", this); // 触发事件的本身
+        }
+
+        function fn1 (self) {
+            console.log("行内点击事件中this指向", self); // 触发事件的本身
+        }
+
+        var obj = {
+            say: function () {
+                console.log("对象中的函数this指向:", this); // 调用函数的对象本身
+
+                function fn2 () {
+                    console.log("对象函数中的函数this指向", this); // window
+                }
+                fn2();
+            }
+        }
+        obj.say();
+
+        console.log(this); // window
+
+        setTimeout(function () {
+            console.log("定时器延时器中的this指向:", this); // window
+        }, 1000)
+
+    </script>
+</body>
+
+</html>

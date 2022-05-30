@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    姓名: <input type="text " class="userIpt">
+    <button type="button" class="btn_add">添加</button>
+    <table>
+        <thead>
+            <th>序号</th>
+            <th>姓名</th>
+            <th>操作</th>
+        </thead>
+        <tbody class="tbd">
+            <!-- <tr>
+                <td>01</td>
+                <td>大</td>
+                <td>
+                    <button type="button" onclick="delFn()">删除</button>
+                </td>
+            </tr> -->
+        </tbody>
+    </table>
+</body>
+<script>
+    var xhr = new XMLHttpRequest();
+    getData()
+    //封装渲染函数
+    function getData () {
+        xhr.open('GET', 'http://localhost:3000/list');
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var obj = JSON.parse(xhr.responseText);
+                show(obj.data)
+            }
+        }
+    }
+    function show (arr) {
+        // 获取展示区dom
+        var tbdDom = document.querySelector('.tbd');
+        var str = '';
+        for (var i = 0; i < arr.length; i++) {
+            str += `
+             <tr>
+                <td>${i < 10 ? '0' + (i + 1) : i}</td>
+                <td>${arr[i].user}</td>
+                <td>
+                    <button type="button" onclick="delFn(${arr[i].id})">删除</button>
+                </td>
+            </tr>`
+        }
+        tbdDom.innerHTML = str
+    }
+    //添加函数
+    document.querySelector('.btn_add').onclick = function () {
+        // 获取value
+        var userDom = document.querySelector('.userIpt');
+        if (userDom.value == '') {
+            alert('请输入内容');
+            return;
+        }
+        //设置传递方式
+        xhr.open('POST', 'http://localhost:3000/add');
+        //设置响应编码
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        //设置实参
+        xhr.send(`user=${userDom.value}&id=${+ new Date()}`);
+        //返回值
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                //接收返回数据
+                var obj = JSON.parse(xhr.responseText)
+                if (obj.code == 200) {
+                    getData()
+                    userDom.value = ''
+                } else {
+                    alert(obj.msg)
+                }
+            }
+        }
+    }
+    //删除函数
+    function delFn (id) {
+        //传递方式
+        xhr.open('GET', 'http://localhost:3000/del?id=' + id);
+        xhr.send();
+        //返回值
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                //接收返回数据
+                var obj = JSON.parse(xhr.responseText)
+                if (obj.code == 200) {
+                    getData()
+                } else {
+                    alert(obj.msg)
+                }
+            }
+        }
+    }
+</script>
+
+</html>

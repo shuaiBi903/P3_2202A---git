@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      .yejian {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>博客管理</h2>
+      <div>
+        新闻标题: <input type="text" class="titleIpt" />
+
+        新闻内容: <input type="text" class="contentIpt" />
+        作者姓名:
+        <select class="userIpt">
+          <option value="aaa">编辑一部</option>
+        </select>
+        <button onclick=" addFn()">添加新闻</button>
+        <div>
+          <button onclick=" souFn()">新闻检索</button>
+          <input type="text" class="souIpt" />
+        </div>
+      </div>
+
+      <div>
+        <button>全部删除</button>
+        <button onclick="yeJian(this)">夜间模式</button>
+      </div>
+
+      <div>
+        <table>
+          <thead>
+            <th>序号</th>
+            <th>新闻标题</th>
+            <th>新闻内容</th>
+            <th>作者</th>
+            <th>操作</th>
+          </thead>
+          <tbody class="tbd">
+            <!-- <tr>
+              <td>1</td>
+              <td>aaa</td>
+              <td>aaa</td>
+              <td>12</td>
+              <td>
+                <button>删除</button>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://192.168.1.35:3000/list");
+    xhr.send();
+    var obj;
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        obj = JSON.parse(xhr.responseText);
+      }
+    };
+
+    function addFn() {
+      xhr.onreadystatechange();
+
+      show(obj.data);
+    }
+
+    function show(arr) {
+      var tbdDom = document.querySelector(".tbd");
+      var str = "";
+      for (let i = 0; i < arr.length; i++) {
+        str += `
+          <tr>
+              <td>${i + 1}</td>
+              <td>${arr[i].title}</td>
+              <td>${arr[i].content}</td>
+              <td>${arr[i].writer}</td>
+              <td>
+                <button onclick="delFn(${arr[i].id})">
+                  删除
+                </button>
+              </td>
+          </tr> 
+       `;
+      }
+      tbdDom.innerHTML = str;
+    }
+
+    function delFn(idd) {
+      var index = obj.data.findIndex(function (v) {
+        return v.id == idd;
+      });
+      obj.data.splice(index, 1);
+      show(obj.data);
+    }
+
+    //搜索
+    function souFn() {
+      var souIptDom = document.querySelector(".souIpt");
+      var newArr = obj.data.filter(function (v) {
+        return v.title == souIptDom.value;
+      });
+      show(newArr);
+    }
+
+    //夜间模式
+    function yeJian(ts) {
+      var bodyDom = document.querySelector("body");
+      bodyDom.classList.toggle("yejian");
+      if (ts.innerText == "夜间模式") {
+        ts.innerText = "关闭夜间";
+      } else {
+        ts.innerText = "夜间模式";
+      }
+    }
+  </script>
+</html>

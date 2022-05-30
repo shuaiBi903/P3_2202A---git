@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <script>
+        var arr = [1, 2, 3, 4, 5];
+        /* 
+        pre: 开始为初始值(结果)
+        cur(item): 每一项
+        index: 下标
+        array: 数组本身
+        初始值: 初始值
+            var 结果 = arr.reduce(function(pre,cur,index,array){
+                
+            },初始值)
+        */
+        // 求数组里面数字的和
+        var sum = arr.reduce(function (pre, cur, index) {
+            // pre += cur;
+            return pre += cur;
+        }, 0);
+
+        console.log(sum);
+
+    </script>
+</body>
+
+</html>

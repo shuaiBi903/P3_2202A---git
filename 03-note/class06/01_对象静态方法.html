@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <script>
+        var obj = {
+            title: "标题"
+        };
+
+        var v = null;
+        Object.defineProperty(obj, "title", {
+            // value: "标题",
+            // writable: true, // 是否可以被修改,false表示不可以被修改,默认为false
+            // configurable: true, // 是否可以被删除,false表示不可以被删除,默认为false
+            // enumerable: true // 是否可以被枚举,false表示不可以被枚举,默认为false
+            get: function () { // 什么时候会调用? 当访问该属性的时候调用该函数
+                return v;
+            },
+            set: function (newValue) { // 什么时候会调用? 当修改该属性的时候调用该函数
+                v = newValue;
+            }
+        })
+
+        // 删除对象中的某一属性
+        // delete obj.title;
+
+        // 枚举
+        // for (var key in obj) {
+        //     console.log(obj[key]);
+        // }
+
+
+        obj.title = "标题1";
+        console.log(obj.title);
+
+        console.log("v:", v)
+        console.log("obj:", obj);
+
+    </script>
+</body>
+
+</html>

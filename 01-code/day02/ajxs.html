@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			var xhr1 = new XMLHttpRequest();
+			xhr1.open("get", "http://www.liulongbin.top:3006/api/getbooks");
+			xhr1.send();
+			xhr1.onreadystatechange = function () {
+				if (xhr1.readyState == 4 && xhr1.status == 200) {
+					console.log(xhr1.responseText);
+					var obj = JSON.parse(xhr1.responseText);
+					console.log(obj);
+				}
+			};
+		</script>
+	</body>
+</html>

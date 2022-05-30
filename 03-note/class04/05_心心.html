@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+    <style>
+        .app {
+            width: max-content;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app"></div>
+    <script>
+        // 获取DOM
+        var app = document.querySelector(".app");
+
+        // 声明实心个数
+        var saveIndex = 3;
+
+        showFn();
+
+        // 渲染图片
+        function showFn () {
+            // var str = "";
+            // for (var i = 0; i < saveIndex; i++) {
+            //     str += `
+            //         <img src="./images/1.png" onmousemove="moveFn(${i + 1})" alt="">
+            //     `;
+            // }
+            // for (var i = 0; i < 5 - saveIndex; i++) {
+            //     str += `
+            //         <img src="./images/0.png" onmousemove="moveFn(${i + 1})" alt="">
+            //     `;
+            // }
+            // app.innerHTML = str;
+
+
+            app.innerHTML = "";
+
+            for (let i = 0; i < 5; i++) {
+                if (saveIndex > i) {
+                    // 创建实心
+                    var img1 = document.createElement("img");
+                    img1.src = "./images/1.png";
+                    img1.onmousemove = onmousemoveFn(i + 1);
+                    app.appendChild(img1);
+                } else {
+                    // 创建空心
+                    var img0 = document.createElement("img");
+                    img0.src = "./images/0.png";
+                    img0.onmousemove = onmousemoveFn(i + 1);
+                    app.appendChild(img0);
+                }
+            }
+
+            // 移除全部清空
+            app.onmouseleave = function () {
+                saveIndex = 0;
+                showFn();
+            }
+
+        }
+
+        // 鼠标移动事件
+        function onmousemoveFn (num) {
+            return function () {
+                saveIndex = num;
+                showFn();
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

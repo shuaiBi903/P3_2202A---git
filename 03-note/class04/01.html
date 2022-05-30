@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <div>
+        用户名:
+        <input type="text" class="username">
+        <button type="button" class="btn">添加</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" onclick="del()">删除</button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // 一加载页面就获取数据渲染页面
+        getData();
+
+        // 封装获取DOM的函数
+        function getDom (str) {
+            return document.querySelector(str);
+        }
+
+        // 点击事件
+        getDom(".btn").onclick = function () {
+            // 非空判断
+            if (getDom(".username").value) {
+                // 创建xhr
+                var xhr = new XMLHttpRequest();
+
+                // 规定请求方式
+                xhr.open('POST', 'http://localhost:3000/add');
+
+                // 设置请求头
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                // 发送请求
+                xhr.send(`username=${getDom(".username").value}&id=${+new Date()}`); // a=1&b=2
+
+                // 接收响应数据
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // console.log(xhr.responseText);
+                        var obj = JSON.parse(xhr.responseText);
+                        if (obj.code == 200) {
+                            // 重新获取数据渲染页面
+                            getData();
+
+                            // 清空输入框
+                            getDom(".username").value = "";
+                        } else {
+                            alert(obj.msg)
+                        }
+                    }
+                }
+
+            } else {
+                alert("请先输入用户名!");
+            }
+        }
+
+        // 获取数据
+        function getData () {
+            // 创建xhr
+            var xhr = new XMLHttpRequest();
+
+            // 规定请求方式
+            xhr.open('GET', 'http://localhost:3000/list');
+
+            // 发送请求
+            xhr.send();
+
+            // 接收响应数据
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // console.log(xhr.responseText);
+                    var obj = JSON.parse(xhr.responseText);
+                    var arr = obj.data;
+                    showFn(arr);
+                }
+            }
+        }
+
+
+        // 渲染页面
+        function showFn (arr) {
+            var str = "";
+            for (var i = 0; i < arr.length; i++) {
+                str += `
+                    <tr>
+                        <td>${arr[i].username}</td>
+                        <td>
+                            <button type="button" onclick="del(${arr[i].id})">删除</button>
+                        </td>
+                    </tr>
+                `;
+            }
+            document.querySelector('tbody').innerHTML = str;
+        }
+
+        // 删除
+        function del (id) {
+            // 创建xhr
+            var xhr = new XMLHttpRequest();
+
+            // 规定请求方式
+            xhr.open('GET', `http://localhost:3000/del?id=${id}`);
+
+            // 发送请求
+            xhr.send();
+
+            // 接收响应数据
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // console.log(xhr.responseText);
+                    var obj = JSON.parse(xhr.responseText);
+                    if (obj.code == 200) {
+                        // 获取数据渲染页面
+                        getData();
+                    } else {
+                        alert(obj.msg)
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

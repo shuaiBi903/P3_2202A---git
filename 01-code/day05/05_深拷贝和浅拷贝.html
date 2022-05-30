@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //浅拷贝
+        var obj = {
+            a: 1,
+            b: 2,
+            c: {
+                d: 5,
+            }
+        }
+        // var obj1 = Object.assign({}, obj);
+        // obj1.c.d = 6;
+        // obj1.a = 5;
+        console.log(obj);
+        // console.log(obj1);
+
+        //深拷贝
+        function clone (obj) {
+            var newObj = {};
+            for (var key in obj) {
+                if (typeof obj[key] === 'object') {
+                    newObj[key] = clone(obj[key]);
+                } else {
+                    newObj[key] = obj[key];
+                }
+            }
+            return newObj
+        }
+        var obj2 = clone(obj)
+        obj2.a = 2
+        obj2.c.d = 6
+        console.log(obj2);
+    </script>
+</body>
+
+</html>

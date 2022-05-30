@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    姓名: <input type="text" class="userIpt">
+    年龄: <input type="text" class="ageIpt">
+    性别: <input type="radio" name="sexIpt" value="男" checked />男
+    <input type="radio" class="sexIpt" value="女" />女
+  </div>
+  <button type="button" onclick="addFn()">添加</button>
+  <table>
+    <thead>
+      <th>序号</th>
+      <th>姓名</th>
+      <th>性别</th>
+      <th>年龄</th>
+      <th>操作</th>
+    </thead>
+    <tbody class="tbd">
+      <!-- <tr>
+          <td>1</td>
+          <td>熏悟空</td>
+          <td>男</td>
+          <td>18</td>
+          <td>
+            <button type="button">删除</button>
+          </td>
+        </tr> -->
+    </tbody>
+  </table>
+</body>
+<script>
+
+  //ajax框架
+  var xhr = new XMLHttpRequest();
+  //封装获取Dom函数
+  function getDom (str) {
+    return document.querySelector(str)
+  }
+  getData()
+
+  //ajax获取数据渲染
+  function getData () {
+    //获取方式
+    xhr.open("GET", "http://localhost:3000/list");
+    //发送请求
+    xhr.send();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var obj = JSON.parse(xhr.responseText);
+        show(obj.data)
+      }
+    }
+  }
+
+  function show (arr) {
+    var tbdDom = document.querySelector('.tbd')
+    var str = ''
+    for (let i = 0; i < arr.length; i++) {
+      str += `
+              <tr>
+                    <td>${i + 1}</td>
+                    <td>${arr[i].user}</td>
+                    <td>${arr[i].age}</td>
+                    <td>
+                      <button type="button" onclick='delFn(${arr[i].id})'>删除</button>
+                    </td>
+              </tr>
+        `
+    }
+    tbdDom.innerHTML = str
+  }
+  //获取dom元素
+  var sexDom = getDom('input[name=sexIpt]')
+  //添加功能
+  function addFn () {
+    //设置请求方式
+    xhr.open('POST', 'http://localhost:3000/add')
+    //设置请求头
+    xhr.setRequestHeader('Content-Type', 'appclition/x-www-form-urlencoded')
+    //传参
+    console.log(getDom('.userIpt').value);
+    xhr.send(`user=${getDom('.userIpt').value}&age=${getDom('.ageIpt').value}&id=${+ new Date()}`)
+
+    xhr.onreadystatechange = function () {
+      var obj = JSON.parse(xhr.responseText)
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        if (obj.code == 200) {
+          getData()
+        } else {
+          alert(obj.msg)
+        }
+      }
+    }
+  }
+
+  //删除功能
+  function delFn (id) {
+    console.log(id);
+    xhr.open("GET", "http://localhost:3000/del?id=" + id)
+    xhr.send()
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var obj = JSON.parse(xhr.responseText)
+        if (obj.code == 200) {
+          getData()
+        } else {
+          alert(obj.msg)
+        }
+      }
+    }
+  }
+</script>
+
+</html>

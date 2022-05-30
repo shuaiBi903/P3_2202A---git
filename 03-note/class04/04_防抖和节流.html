@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Html</title>
+</head>
+
+<body>
+    <div>
+        <button type="button">防抖</button>
+        <button type="button">节流</button>
+    </div>
+    <script>
+        /*
+            函数中return返回值
+            将return后面的值返回到函数调用的地方
+        */
+
+        /*
+            防抖:就是一定时间内,只会执行最后一次任务
+                即:在一个动作发生一定时间之后,才执行特定事件
+            节流:就是一定时间内,只执行一次
+                即:当持续触发事件时,保证一定时间段内只调用一次事件处理函数
+        */
+        /*
+            防抖(debounce)：
+                在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时。
+                典型的案例就是输入框搜索：输入结束后n秒才进行搜索请求，n秒内又输入的内容，则重新计时。
+
+            节流(throttle)：
+                规定在一个单位时间内，只能触发一次函数，如果这个单位时间内触发多次函数，只有一次生效。
+                典型的案例就是鼠标不断点击触发，规定在n秒内多次点击只生效一次。
+
+            为什么要掌握防抖和节流
+                函数节流（throttle）与函数防抖（debounce）都是可以限制函数的执行频次，根据不同的场景来对执行频率进行限制，
+                避免了函数触发频率过高导致的响应速度跟不上触发频率，出现延迟，假死或卡顿的现象。
+        */
+
+        // 防抖
+        document.querySelectorAll("button")[0].onclick = debounce();
+
+        function debounce () {
+            var timer = null;
+            return function () {
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(function () {
+                    console.log("防抖");
+                }, 2000)
+            }
+        }
+
+        // 节流
+        document.querySelectorAll("button")[1].onclick = throttle();
+        function throttle () {
+            var flag = true;
+            return function () {
+                if (flag) {
+                    flag = false;
+                    setTimeout(function () {
+                        console.log("节流");
+                        flag = true;
+                    }, 2000)
+                }
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
